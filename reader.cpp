@@ -55,19 +55,21 @@ void readInGames(string gameFileName){
 *@param teamFileName name of team file.
 */
 void readInTeams(string teamFileName){
-	string num, team, line;
+  string num,line;
 	fstream fout;
-	fout.open("matlabteams.txt", ios::in);
+	fout.open("mcb2019teams", ios::in);
 
 	getline(fout, line);
 	stringstream s(line);
-	getline(s, num, ',');
-	for (int i = 0; i <354; i++){
+	getline(fout, num, ',');
+	for (int i = 0; i <353; i++){
 		getline(s, num, ',');
-		int pos = num.find(" ");
-		team = num.substr(0, pos);
-		num = num.substr(pos);
-		cout << team << " " << num << "\n";
+      		string team = num;
+		team = team.substr(1);
+		int pos = team.find(" ",0);
+		string name = team.substr(0,pos);
+		string teamNum = team.substr(pos+1);
+		cout << name << " "<< teamNum<< "\n";
 	}
 }
 
@@ -78,5 +80,6 @@ int main(int argc, char** argv){
 	//	cin >> teamFileName;
 	cout << "Input name of games file\n";
 	//cin >> gameFileName;
-	readInGames(gameFileName);
+	//	readInGames(gameFileName);
+	readInTeams(teamFileName);
 }
