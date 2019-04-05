@@ -5,11 +5,11 @@
 #include <map> 
 #include <sstream>
 
-//#include <Eigen/Core>
-//include <Eigen/Dense>
+#include <Eigen/Eigen/Core>
+#include <Eigen/Eigen/Dense>
 //using namespace Eigen;
 using namespace std;
-
+Eigen::MatrixXi m(353,353);
 
 /*string removeSpaces(string str)
 {
@@ -44,7 +44,7 @@ void readInGames(string gameFileName){
 		getline(fout, score1, ',');
 		getline(fout, team2, ',');
 		getline(fout, score2, '\n');
-		cout << "Date:" << date << " Team1:  " << team1 << " Score1: " << score1 << " Team2: " << team2 << " Score2: " << score2 << "\n";
+		//cout << "Date:" << date << " Team1:  " << team1 << " Score1: " << score1 << " Team2: " << team2 << " Score2: " << score2 << "\n";
 		//Put into matrix.
        	}
 }
@@ -69,7 +69,7 @@ void readInTeams(string teamFileName){
 		int pos = team.find(" ",0);
 		string name = team.substr(0,pos);
 		string teamNum = team.substr(pos+1);
-		cout << name << " "<< teamNum<< "\n";
+		//cout << name << " "<< teamNum<< "\n";
 	}
 }
 
@@ -82,4 +82,5 @@ int main(int argc, char** argv){
 	//cin >> gameFileName;
 	//	readInGames(gameFileName);
 	readInTeams(teamFileName);
+        //cout<< m;
 }
