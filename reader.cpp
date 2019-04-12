@@ -17,6 +17,10 @@ using namespace std;
  *GLOBAL VARIABLES
  *
  */
+Eigen::MatrixXd matrix(6002,353);
+Eigen::MatrixXd score(6002,1);
+Eigen::MatrixXd matrix2(353,353);
+Eigen::MatrixXd y(353,1);
 
 
 
@@ -45,62 +49,60 @@ bool checkAway(string teamName){
 *X(T)Xr = X(T)y
 */
 void readInGames(string gameFileName,map<string,int> map){
-	string date, team1, score1, team2, score2;
-	string temp, line;
-	fstream fout;
-	int n = 6002;
-	int i = 0;
-	//MatrixXf matrix = MatrixXf(n,n);
-	//VectorXf vector = VectorXf(n);
-	fout.open("mcb2019CSV", fstream::in);
+  string date, team1, score1, team2, score2;
+  string temp, line;
+  fstream fout;
+  int n = 6002;
+  int i = 0;
+  //MatrixXf matrix = MatrixXf(n,n);
+  //VectorXf vector = VectorXf(n);
+  fout.open("mcb2019CSV", fstream::in);
 	
-       	while (i<n){
-	  // getline(fout, line);
-		//	stringstream s(line);
-		//cout<< line<< "\n";
-		
-		getline(fout, date, ',');
-		getline(fout, team1, ',');
-		getline(fout, score1, ',');
-		getline(fout, team2, ',');
-		getline(fout, score2, '\n');
-	        if(checkAway(team1)){
-		  team1 = team1.substr(1);
-		}
-		else if(checkAway(team2)){
-		  team2 = team2.substr(1);
-		}
-		//cout<<map.find(team2)->first<<map.find(team2)->second<<"\n";
-		//cout << "Date:" << date << " Team1:  " << team1 << " Score1: " << score1 << " Team2: " << team2 << " Score2: " << score2 << "\n";
-	        int n = atoi(score1.c_str());
-		int m = atoi(score2.c_str());
-		Eigen::MatrixXd matrix(n,353);
-		int diff;
+  while (i<n){
+    // getline(fout, line);
+    //	stringstream s(line);
+    //cout<< line<< "\n";
+    getline(fout, date, ',');
+    getline(fout, team1, ',');
+    getline(fout, score1, ',');
+    getline(fout, team2, ',');
+    getline(fout, score2, '\n');
+    if(checkAway(team1)){
+      team1 = team1.substr(1);
+    }
+    else if(checkAway(team2)){
+      team2 = team2.substr(1);
+    }
+    //cout<<map.find(team2)->first<<map.find(team2)->second<<"\n";
+    //cout << "Date:" << date << " Team1:  " << team1 << " Score1: " << score1 << " Team2: " << team2 << " Score2: " << score2 << "\n";
+    int scoreI = atoi(score1.c_str());
+    int scoreII = atoi(score2.c_str());
+    int diff;
+    //Winning
+    if(scoreI>scoreII){
+      diff = scoreI - scoreII;
+      matrix(i,0)=diff;
+      int winner = map.find(team1)->second;
+      int loser = map.find(team2)->second;
+      //cout<< winner<< " " << i<<"\n";
+      if(winner>0&&winner<353&&loser>0&&loser<353){
+	matrix(i,winner)= 1;
+	matrix(i,loser) = -1;
+      }
+    }
+    else{
+      diff = scoreII - scoreI;
+      int winner = map.find(team2)->second;
+      int loser = map.find(team1)->second;
+      if(winner>0&&winner<353&&loser>0&&loser<353){
+	matrix(i,winner)= 1;
+	matrix(i,loser) = -1;
+	matrix(i,0)=diff;
+      }
+    }
+    i++;
+  }
 
-		if(n>m){
-		  diff = n - m;
-		 int winner = map.find(team1)->second;
-		int loser = map.find(team2)->second;
-		//cout<< winner<< " " << i<<"\n";
-		if(winner<353&&loser<353){
-		      matrix(i,winner)= 1;
-		      matrix(i,loser) = 1;
-		     }
-		}
-		else{
-		  diff = m - n;
-		int winner = map.find(team2)->second;
-		int loser = map.find(team1)->second;
-		if(winner<353&&loser<353){
-		      matrix(i,winner)= 1;
-		      matrix(i,loser) = 1;
-		     }
-		}
-		//Put into matrix.
-		
-		//last
-		i++;
-       	}
 }
 
 
@@ -160,6 +162,10 @@ map<string,int> readInTeams(string teamFileName){
 	return map;
 }
 
+void combine(){
+  matrix2 = matrix.transpose()*matrix;
+  //y = matrix.transpose()*y;
+}
 
 
 int main(int argc, char** argv){
@@ -174,4 +180,5 @@ int main(int argc, char** argv){
         //cout<<map.find("Duke")->first<<" "<< map.find("Duke")->second<<"\n";
 	//READ IN GAMES
 	readInGames(gameFileName,map);
+	combine();
 }
