@@ -74,23 +74,27 @@ void readInGames(string gameFileName,map<string,int> map){
 		//cout << "Date:" << date << " Team1:  " << team1 << " Score1: " << score1 << " Team2: " << team2 << " Score2: " << score2 << "\n";
 	        int n = atoi(score1.c_str());
 		int m = atoi(score2.c_str());
+		Eigen::MatrixXd matrix(n,353);
 		int diff;
+
 		if(n>m){
 		  diff = n - m;
-		  int winner = map.find(team1)->second;
-		  int loser = map.find(team2)->second;
-		  cout<< winner;
-		  MatrixXf m(6002,352);
-		  m(i,winner)= 1;
-		  m(i,loser) = -1;
+		 int winner = map.find(team1)->second;
+		int loser = map.find(team2)->second;
+		//cout<< winner<< " " << i<<"\n";
+		if(winner<353&&loser<353){
+		      matrix(i,winner)= 1;
+		      matrix(i,loser) = 1;
+		     }
 		}
 		else{
 		  diff = m - n;
-		  int winner = map.find(team1)->second;
-		  int loser = map.find(team2)->second;
-		   cout<< winner;
-		   //m(i,winner)= 1;
-		   // m(i,loser) = -1;
+		int winner = map.find(team2)->second;
+		int loser = map.find(team1)->second;
+		if(winner<353&&loser<353){
+		      matrix(i,winner)= 1;
+		      matrix(i,loser) = 1;
+		     }
 		}
 		//Put into matrix.
 		
