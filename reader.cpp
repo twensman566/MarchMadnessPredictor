@@ -8,8 +8,8 @@
 #include <sstream>
 #include <bits/stdc++.h>
 
-//#include <Eigen/Eigen/Core>
-//#include <Eigen/Eigen/Dense>
+#include <Eigen/Eigen/Core>
+#include <Eigen/Eigen/Dense>
 //using namespace Eigen;
 using namespace std;
 
@@ -17,15 +17,32 @@ using namespace std;
  *GLOBAL VARIABLES
  *
  */
-//Eigen::MatrixXi m(353,353);
 
 
+
+/*
+ *Checks if a team was away.
+ *
+ *
+ *
+ */
+bool checkAway(string teamName){
+  string temp = teamName;
+  char array[1024];
+  strcpy(array,temp.c_str());
+  if(array[0]=='@'){
+    return true;
+  }
+  return false;
+
+}
 
 /* Method to read in games file.
 *
 *@param gameFileName name of game file.
-*
-*
+*add 1 to diagonal of team that won
+*add -1 to corresponding column of team that lost
+*X(T)Xr = X(T)y
 */
 void readInGames(string gameFileName,map<string,int> map){
 	string date, team1, score1, team2, score2;
@@ -41,18 +58,47 @@ void readInGames(string gameFileName,map<string,int> map){
 	  // getline(fout, line);
 		//	stringstream s(line);
 		//cout<< line<< "\n";
-		i++;
+		
 		getline(fout, date, ',');
 		getline(fout, team1, ',');
 		getline(fout, score1, ',');
 		getline(fout, team2, ',');
 		getline(fout, score2, '\n');
-		
+	        if(checkAway(team1)){
+		  team1 = team1.substr(1);
+		}
+		else if(checkAway(team2)){
+		  team2 = team2.substr(1);
+		}
 		//cout<<map.find(team2)->first<<map.find(team2)->second<<"\n";
-		cout << "Date:" << date << " Team1:  " << team1 << " Score1: " << score1 << " Team2: " << team2 << " Score2: " << score2 << "\n";
+		//cout << "Date:" << date << " Team1:  " << team1 << " Score1: " << score1 << " Team2: " << team2 << " Score2: " << score2 << "\n";
+	        int n = atoi(score1.c_str());
+		int m = atoi(score2.c_str());
+		int diff;
+		if(n>m){
+		  diff = n - m;
+		  int winner = map.find(team1)->second;
+		  int loser = map.find(team2)->second;
+		  cout<< winner;
+		  MatrixXf m(6002,352);
+		  m(i,winner)= 1;
+		  m(i,loser) = -1;
+		}
+		else{
+		  diff = m - n;
+		  int winner = map.find(team1)->second;
+		  int loser = map.find(team2)->second;
+		   cout<< winner;
+		   //m(i,winner)= 1;
+		   // m(i,loser) = -1;
+		}
 		//Put into matrix.
+		
+		//last
+		i++;
        	}
 }
+
 
 /*
  *Method to remove underscores from team name to match game names.
@@ -106,7 +152,6 @@ map<string,int> readInTeams(string teamFileName){
 		//cout << teamName <<" "<< teamNum<<"\n";
 		int n = atoi(teamNum.c_str());
 		map.insert(pair<string,int>(teamName,n-2));
-		
 	}
 	return map;
 }
@@ -122,7 +167,7 @@ int main(int argc, char** argv){
 	//cin >> gameFileName;
 	// READ IN TEAMS
 	map<string,int> map = readInTeams(teamFileName);
-        cout<<map.find("Duke")->first<<" "<< map.find("Duke")->second<<"\n";
+        //cout<<map.find("Duke")->first<<" "<< map.find("Duke")->second<<"\n";
 	//READ IN GAMES
 	readInGames(gameFileName,map);
 }
