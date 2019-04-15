@@ -7,6 +7,7 @@
 #include <string.h>
 #include <sstream>
 #include <bits/stdc++.h>
+#include <iterator>
 
 #include <Eigen/Eigen/Core>
 #include <Eigen/Eigen/Dense>
@@ -20,7 +21,8 @@ using namespace std;
 Eigen::MatrixXd matrix(6002,353);
 Eigen::MatrixXd score(6002,1);
 Eigen::MatrixXd matrix2(353,353);
-Eigen::MatrixXd y(353,1);
+Eigen::MatrixXd rightHandSide(353,1);
+Eigen::MatrixXd rMatrix(353,1);
 
 
 
@@ -88,6 +90,7 @@ void readInGames(string gameFileName,map<string,int> map){
       if(winner>0&&winner<353&&loser>0&&loser<353){
 	matrix(i,winner)= 1;
 	matrix(i,loser) = -1;
+	score(i,0)=diff;
       }
     }
     else{
@@ -97,7 +100,7 @@ void readInGames(string gameFileName,map<string,int> map){
       if(winner>0&&winner<353&&loser>0&&loser<353){
 	matrix(i,winner)= 1;
 	matrix(i,loser) = -1;
-	matrix(i,0)=diff;
+	score(i,0)=diff;
       }
     }
     i++;
@@ -164,9 +167,20 @@ map<string,int> readInTeams(string teamFileName){
 
 void combine(){
   matrix2 = matrix.transpose()*matrix;
-  //y = matrix.transpose()*y;
+  rightHandSide = matrix.transpose()*score;
+  //cout << matrix2;
+  //cout << rightHandSide<<"\n";
+  rMatrix = ((matrix2.transpose()*matrix2).inverse())*matrix2.transpose()*rightHandSide;
 }
 
+void printRatings(map<string,int> map){
+  std::map<string,int>::iterator it = map.begin();
+  while(it != map.end()){
+    int spot = it->second;
+    cout<<it->first<< " " <<rMatrix(spot,0)<<"\n";
+    it++;
+  }
+}
 
 int main(int argc, char** argv){
 
@@ -181,4 +195,5 @@ int main(int argc, char** argv){
 	//READ IN GAMES
 	readInGames(gameFileName,map);
 	combine();
+	printRatings(map);
 }
