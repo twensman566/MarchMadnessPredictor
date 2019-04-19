@@ -76,7 +76,7 @@ void readInGames(string gameFileName,map<string,int> map){
       team2 = team2.substr(1);
     }
     //cout<<map.find(team2)->first<<map.find(team2)->second<<"\n";
-    //cout << "Date:" << date << " Team1:  " << team1 << " Score1: " << score1 << " Team2: " << team2 << " Score2: " << score2 << "\n";
+    //cout << "Date:" << date << " Team1:  " << team1 << " Score1: " << score1 << " Team2: " << team2 << " Score2 " << score2 << "\n";
     int scoreI = atoi(score1.c_str());
     int scoreII = atoi(score2.c_str());
     int diff;
@@ -105,7 +105,6 @@ void readInGames(string gameFileName,map<string,int> map){
     }
     i++;
   }
-
 }
 
 
@@ -136,7 +135,7 @@ string newTeamName(string teamName){
 
 
 /*
-* Method to read in team file.
+* Method to read in team file and returns a map of the team name (key) and place in matrix (value).
 *
 *@param teamFileName name of team file.
 */
@@ -165,6 +164,10 @@ map<string,int> readInTeams(string teamFileName){
 	return map;
 }
 
+/*
+ *Method to do the matrix calculations.
+ *
+ */
 void combine(){
   matrix2 = matrix.transpose()*matrix;
   rightHandSide = matrix.transpose()*score;
@@ -177,6 +180,35 @@ void combine(){
   rMatrix = ((matrix2.transpose()*matrix2).inverse())*matrix2.transpose()*rightHandSide;
 }
 
+
+/*
+ * Method that returns the highest rating amongst all the teams.
+ *
+ */
+void highestRating(map<string,int> map){
+  double highest = rMatrix(0,0);
+  int index = 0;
+  string highSchool;
+  std::map<string,int>::iterator it = map.begin();
+  int i = 0;
+  while(it != map.end()){
+    if(rMatrix(i,0)>highest){
+      highest =rMatrix(i,0);
+      highSchool = it->first;
+      it++;
+      i++;
+    }
+  }
+  cout<<"Highest rating is "<<highSchool<<" with a rating of "<<highest<<"\n";
+}
+
+
+
+/*
+ *Method to print out ratings for each team.
+ *
+ */
+
 void printRatings(map<string,int> map){
   std::map<string,int>::iterator it = map.begin();
   while(it != map.end()){
@@ -186,6 +218,11 @@ void printRatings(map<string,int> map){
   }
 }
 
+
+/*
+ *Test matrix to verify we get the right values.
+ *
+ */
 void test(){
   Eigen::MatrixXd xMat = Eigen::MatrixXd::Zero(5,4);// xMat(5,4);
   cout<<xMat<<"\n";
@@ -259,5 +296,6 @@ int main(int argc, char** argv){
 	readInGames(gameFileName,map);
 	combine();
 	printRatings(map);
+	//highestRating(map);
 	//test();
 }
