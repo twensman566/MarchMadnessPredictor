@@ -18,11 +18,11 @@ using namespace std;
  *GLOBAL VARIABLES
  *
  */
-Eigen::MatrixXd matrix(6002,353);
-Eigen::MatrixXd score(6002,1);
-Eigen::MatrixXd matrix2(353,353);
-Eigen::MatrixXd rightHandSide(353,1);
-Eigen::MatrixXd rMatrix(353,1);
+Eigen::MatrixXd matrix = Eigen::MatrixXd::Zero(6002,353);
+Eigen::MatrixXd score = Eigen::MatrixXd::Zero(6002,1);
+Eigen::MatrixXd matrix2 = Eigen::MatrixXd::Zero(353,353);
+Eigen::MatrixXd rightHandSide = Eigen::MatrixXd::Zero(353,1);
+Eigen::MatrixXd rMatrix = Eigen::MatrixXd::Zero(353,1);
 
 
 
@@ -170,6 +170,10 @@ void combine(){
   rightHandSide = matrix.transpose()*score;
   //cout << matrix2;
   //cout << rightHandSide<<"\n";
+  for(int i = 0;i<353;i++){
+    matrix2(352,i) = 1;
+  }
+  rightHandSide(352,0) = 0;
   rMatrix = ((matrix2.transpose()*matrix2).inverse())*matrix2.transpose()*rightHandSide;
 }
 
@@ -181,6 +185,65 @@ void printRatings(map<string,int> map){
     it++;
   }
 }
+
+void test(){
+  Eigen::MatrixXd xMat = Eigen::MatrixXd::Zero(5,4);// xMat(5,4);
+  cout<<xMat<<"\n";
+  xMat(0,0)=1;
+  xMat(0,1)=-1;
+  //xMat(0,2)=0;
+  //xMat(0,3)=0;
+
+  // xMat(1,0)=0;
+  //xMat(1,1)=0;
+  xMat(1,2)=1;  
+  xMat(1,3)=-1;
+  
+  //xMat(2,0)=0;
+  xMat(2,1)=-1;
+  //xMat(2,2)=0;
+  xMat(2,3)=1;
+  
+  xMat(3,0)=1;
+  //xMat(3,1)=0;
+  //xMat(3,2)=0;
+  xMat(3,3)=-1;
+  
+  //xMat(4,0)=0;
+  xMat(4,1)=1;
+  xMat(4,2)=-1;
+  //xMat(4,3)=0;
+  
+  Eigen::MatrixXd yMat(5,1);
+  yMat(0,0)=4;
+  yMat(1,0)=0;
+  yMat(2,0)=7;
+  yMat(3,0)=2;
+  yMat(4,0)=1;
+  cout<<xMat<<"\n\n";
+  cout<<yMat<<"\n\n";
+  
+  
+  Eigen::MatrixXd x2 = Eigen::MatrixXd::Zero(4,4);
+  Eigen::MatrixXd y2 = Eigen::MatrixXd::Zero(4,1);
+  Eigen::MatrixXd gj = Eigen::MatrixXd::Zero(4,1);
+  x2 = xMat.transpose()*xMat;
+  cout<<x2<<"\n\n";
+  y2 = xMat.transpose()*yMat;
+  cout<<y2<<"\n\n";
+  //cout << matrix2;
+  //cout << rightHandSide<<"\n";
+  x2(3,0) = 1;
+  x2(3,1) = 1;
+  x2(3,2) = 1;
+  x2(3,3) = 1;
+  cout<<x2<<"\n\n";
+  y2(3) = 0;
+  cout<<y2<<"\n\n";
+  gj = ((x2.transpose()*x2).inverse())*x2.transpose()*y2;
+  cout<<gj<<"\n";
+}
+
 
 int main(int argc, char** argv){
 
@@ -196,4 +259,5 @@ int main(int argc, char** argv){
 	readInGames(gameFileName,map);
 	combine();
 	printRatings(map);
+	//test();
 }
