@@ -195,9 +195,9 @@ void highestRating(map<string,int> map){
     if(rMatrix(i,0)>highest){
       highest =rMatrix(i,0);
       highSchool = it->first;
-      it++;
-      i++;
     }
+    it++;
+    i++;
   }
   cout<<"Highest rating is "<<highSchool<<" with a rating of "<<highest<<"\n";
 }
@@ -296,6 +296,6 @@ int main(int argc, char** argv){
 	readInGames(gameFileName,map);
 	combine();
 	printRatings(map);
-	//highestRating(map);
+	highestRating(map);
 	//test();
 }
