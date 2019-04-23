@@ -285,17 +285,17 @@ void test(){
 int main(int argc, char** argv){
 
 	string teamFileName, gameFileName;
-	cout << "Input name of team file\n";
-	//	cin >> teamFileName;
-	cout << "Input name of games file\n";
-	//cin >> gameFileName;
+	cout << "Welcome to the Tetrominoes MCB NCAA 2019 ranking system"
 	// READ IN TEAMS
 	map<string,int> map = readInTeams(teamFileName);
         //cout<<map.find("Duke")->first<<" "<< map.find("Duke")->second<<"\n";
 	//READ IN GAMES
 	readInGames(gameFileName,map);
+	//Combine Matrices to get ranking values;
 	combine();
+	//Prints off all ratings
 	printRatings(map);
+	//Prints off highest rating.
 	highestRating(map);
 	//test();
 }
