@@ -56,6 +56,8 @@ void readInGames(string gameFileName,map<string,int> map){
   fstream fout;
   int n = 6002;
   int i = 0;
+  int team1Home = 0;
+  int team2Home = 0;
   //MatrixXf matrix = MatrixXf(n,n);
   //VectorXf vector = VectorXf(n);
   fout.open("mcb2019CSV", fstream::in);
@@ -71,9 +73,11 @@ void readInGames(string gameFileName,map<string,int> map){
     getline(fout, score2, '\n');
     if(checkAway(team1)){
       team1 = team1.substr(1);
+      team1Home = .2;
     }
     else if(checkAway(team2)){
       team2 = team2.substr(1);
+      team2Home = .2;
     }
     //cout<<map.find(team2)->first<<map.find(team2)->second<<"\n";
     //cout << "Date:" << date << " Team1:  " << team1 << " Score1: " << score1 << " Team2: " << team2 << " Score2 " << score2 << "\n";
@@ -88,7 +92,7 @@ void readInGames(string gameFileName,map<string,int> map){
       int loser = map.find(team2)->second;
       //cout<< winner<< " " << i<<"\n";
       if(winner>0&&winner<353&&loser>0&&loser<353){
-	matrix(i,winner)= 1;
+	matrix(i,winner)= 1 +team1Home;
 	matrix(i,loser) = -1;
 	score(i,0)=diff;
       }
@@ -98,12 +102,14 @@ void readInGames(string gameFileName,map<string,int> map){
       int winner = map.find(team2)->second;
       int loser = map.find(team1)->second;
       if(winner>0&&winner<353&&loser>0&&loser<353){
-	matrix(i,winner)= 1;
+	matrix(i,winner)= 1+team2Home;
 	matrix(i,loser) = -1;
 	score(i,0)=diff;
       }
     }
     i++;
+    team1Home = 0;
+    team2Home = 0;
   }
 }
 
@@ -285,7 +291,7 @@ void test(){
 int main(int argc, char** argv){
 
 	string teamFileName, gameFileName;
-	cout << "Welcome to the Tetrominoes MCB NCAA 2019 ranking system"
+	cout << "Welcome to the Tetrominoes MCB NCAA 2019 ranking system";
 	// READ IN TEAMS
 	map<string,int> map = readInTeams(teamFileName);
         //cout<<map.find("Duke")->first<<" "<< map.find("Duke")->second<<"\n";
