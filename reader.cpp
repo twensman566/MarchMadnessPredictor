@@ -448,7 +448,7 @@ void test(){
 int main(int argc, char** argv){
 
 	string teamFileName, gameFileName;
-	cout << "Welcome to the Tetrominoes MCB NCAA 2019 ranking system";
+	cout << "Welcome to the Tetrominoes MCB NCAA 2019 ranking system\n";
 	// READ IN TEAMS
 	map<string,int> map = readInTeams(teamFileName);
         //cout<<map.find("Duke")->first<<" "<< map.find("Duke")->second<<"\n";
