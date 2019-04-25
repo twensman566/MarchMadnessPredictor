@@ -170,6 +170,163 @@ map<string,int> readInTeams(string teamFileName){
 	return map;
 }
 
+void fifthRound(map<string,int> map,string fifth[]){
+        string team1,team2;
+	fstream fout;
+	int spot1,spot2;
+	double rating1,rating2;
+	string sixth[2];
+	fout.open("firstRound", ios::in);
+	for(int i = 0;i<2;i++){
+	  spot1 = map.find(fifth[i*2])->second;
+	  spot2 = map.find(fifth[i*2+1])->second;
+	  rating1 = rMatrix(spot1,0);
+	  rating2 = rMatrix(spot2,0);
+	  if(rating1>rating2){
+	    sixth[i] = fifth[i*2];
+	  }
+	  else{
+	    sixth[i] = fifth[i*2+1];
+	  }
+	}
+	cout<<"------------------------------------------------------\n";
+	cout<<"The championship game is "<< sixth[0]<<"  vs  "<<sixth[1]<<".\n";
+	if(rMatrix(map.find(sixth[0])->second,0)>rMatrix(map.find(sixth[1])->second,0)){
+	  cout<<"Your champion is "<< sixth[0]<<".\n";
+	}
+	else{
+	  cout<<"Your champion is "<<sixth[1]<<".\n";
+	}
+}
+
+void fourthRound(map<string,int> map,string fourth[]){
+  string team1,team2;
+	fstream fout;
+	int spot1,spot2;
+	double rating1,rating2;
+	string fifth[4];
+	fout.open("firstRound", ios::in);
+	for(int i = 0;i<4;i++){
+	  spot1 = map.find(fourth[i*2])->second;
+	  spot2 = map.find(fourth[i*2+1])->second;
+	  rating1 = rMatrix(spot1,0);
+	  rating2 = rMatrix(spot2,0);
+	  if(rating1>rating2){
+	    fifth[i] = fourth[i*2];
+	  }
+	  else{
+	    fifth[i] = fourth[i*2+1];
+	  }
+	}
+	cout<<"----------------------Fifth Round---------------------\n";
+	for(int j = 0; j < 4;j++){
+	  if(j%1 == 0){
+	    cout<<"\n";
+	  }
+	  cout<< fifth[j]<<"\n";
+	}
+	cout<<"-------------------------------------------------------\n";
+	fifthRound(map,fifth);
+}
+
+void thirdRound(map<string,int> map,string third[]){
+  string team1,team2;
+	fstream fout;
+	int spot1,spot2;
+	double rating1,rating2;
+	string fourth[8];
+	fout.open("firstRound", ios::in);
+	for(int i = 0;i<8;i++){
+	  spot1 = map.find(third[i*2])->second;
+	  spot2 = map.find(third[i*2+1])->second;
+	  rating1 = rMatrix(spot1,0);
+	  rating2 = rMatrix(spot2,0);
+	  if(rating1>rating2){
+	    fourth[i] = third[i*2];
+	  }
+	  else{
+	    fourth[i] = third[i*2+1];
+	  }
+	}
+	cout<<"----------------------Third Round---------------------\n";
+	for(int j = 0; j < 8;j++){
+	  if(j%2 == 0){
+	    cout<<"\n";
+	  }
+	  cout<< fourth[j]<<"\n";
+	}
+	cout<<"--------------------------------------------------------\n";
+	  fourthRound(map,fourth);
+}
+
+
+
+
+void secondRound(map<string,int> map,string second[]){
+  string team1,team2;
+	fstream fout;
+	int spot1,spot2;
+	double rating1,rating2;
+	string third[16];
+	fout.open("firstRound", ios::in);
+	for(int i = 0;i<16;i++){
+	  spot1 = map.find(second[i*2])->second;
+	  spot2 = map.find(second[i*2+1])->second;
+	  rating1 = rMatrix(spot1,0);
+	  rating2 = rMatrix(spot2,0);
+	  if(rating1>rating2){
+	    third[i] = second[i*2];
+	  }
+	  else{
+	    third[i] = second[i*2+1];
+	  }
+	}
+cout<<"----------------------Second Round---------------------\n";
+	for(int j = 0; j < 16;j++){
+	  if(j%4 == 0){
+	    cout<<"\n";
+	  }
+	  cout<< third[j]<<"\n";
+	}
+	cout<<"--------------------------------------------------\n";
+	thirdRound(map,third);
+}
+
+/*
+ *
+ *
+ */
+void firstRound(map<string,int> map){
+        string team1,team2;
+	fstream fout;
+	int spot1,spot2;
+	double rating1,rating2;
+	string second[32];
+	fout.open("firstRound", ios::in);
+	for(int i = 0;i<32;i++){
+	  getline(fout, team1, '\n');
+	  getline(fout, team2, '\n');
+	  spot1 = map.find(team1)->second;
+	  spot2 = map.find(team2)->second;
+	  rating1 = rMatrix(spot1,0);
+	  rating2 = rMatrix(spot2,0);
+	  if(rating1>rating2){
+	    second[i] = team1;
+	  }
+	  else{
+	    second[i] = team2;
+	  }
+	}
+	cout<<"----------------------First Round---------------------\n";
+	for(int j = 0; j < 32;j++){
+	  if(j%8 == 0){
+	    cout<<"\n";
+	  }
+	  cout<< second[j]<<"\n";
+	}
+	cout<<"--------------------------------------------------\n";
+	secondRound(map,second);
+}
 /*
  *Method to do the matrix calculations.
  *
@@ -304,4 +461,5 @@ int main(int argc, char** argv){
 	//Prints off highest rating.
 	highestRating(map);
 	//test();
+	firstRound(map);
 }
