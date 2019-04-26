@@ -189,7 +189,7 @@ void fifthRound(map<string,int> map,string fifth[]){
 	    sixth[i] = fifth[i*2+1];
 	  }
 	}
-	cout<<"------------------------------------------------------\n";
+	cout<<"-----------------------Champsionship Game-------------------------------\n";
 	cout<<"The championship game is "<< sixth[0]<<"  vs  "<<sixth[1]<<".\n";
 	if(rMatrix(map.find(sixth[0])->second,0)>rMatrix(map.find(sixth[1])->second,0)){
 	  cout<<"Your champion is "<< sixth[0]<<".\n";
@@ -281,7 +281,7 @@ void secondRound(map<string,int> map,string second[]){
 	    third[i] = second[i*2+1];
 	  }
 	}
-cout<<"----------------------Second Round---------------------\n";
+	cout<<"----------------------Second Round---------------------\n";
 	for(int j = 0; j < 16;j++){
 	  if(j%4 == 0){
 	    cout<<"\n";
@@ -293,7 +293,7 @@ cout<<"----------------------Second Round---------------------\n";
 }
 
 /*
- *
+ * Initializes the 2019 MCB Tournament.
  *
  */
 void firstRound(map<string,int> map){
