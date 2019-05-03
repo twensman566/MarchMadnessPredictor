@@ -215,6 +215,45 @@ void printRatings(map<string,int> map){
   }
 }
 
+void top10(map<string,int>map){
+  std::map<string,int>::iterator it = map.begin();
+  string name[32];
+  int spot[32];
+  double ratings[32];
+  int i =0;
+  while(it != map.end()){
+    name[i] = it->first;
+    spot[i] = it->second;
+    ratings[i] = rMatrix(spot[i],0);
+    i++;
+    it++;
+  }
+  cout<<"\nTop 10 Teams:\n";
+  double temp;
+  string tempName;
+    for(int y=0; y<32; y++)
+    {
+        for(int j=y+1; j<32; j++)
+        {
+            if(ratings[j] < ratings[y])
+            {
+                temp = ratings[y];
+                ratings[y] = ratings[j];
+                ratings[j] = temp;
+		tempName = name[y];
+		name[y] = name[j];
+		name[j] = tempName;
+            }
+        }
+    }
+    int count = 0;
+    for(int a = 31; a > 21; a--){
+      count++;
+      cout<<count << " "<<name[a]<<" "<<ratings[a]<<"\n";
+    }
+
+}
+
 
 int main(int argc, char** argv){
 
@@ -234,4 +273,5 @@ int main(int argc, char** argv){
 	highestRating(map);
 	//test();
 	//firstRound(map);
+	top10(map);
 }
