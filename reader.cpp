@@ -61,8 +61,10 @@ void readInGames(string gameFileName,map<string,int> map){
   //MatrixXf matrix = MatrixXf(n,n);
   //VectorXf vector = VectorXf(n);
   fout.open("mcb2019CSV", fstream::in);
-	
+  double scaler = .25;
   while (i<n){
+    if(n%1500 == 0)
+      scaler = scaler + .25;
     // getline(fout, line);
     //	stringstream s(line);
     //cout<< line<< "\n";
@@ -73,38 +75,41 @@ void readInGames(string gameFileName,map<string,int> map){
     getline(fout, score2, '\n');
     if(checkAway(team1)){
       team1 = team1.substr(1);
-      team1Home = .2;
+      team1Home = 1;
     }
     else if(checkAway(team2)){
       team2 = team2.substr(1);
-      team2Home = .2;
+      team2Home = 1;
     }
     //cout<<map.find(team2)->first<<map.find(team2)->second<<"\n";
     //cout << "Date:" << date << " Team1:  " << team1 << " Score1: " << score1 << " Team2: " << team2 << " Score2 " << score2 << "\n";
     int scoreI = atoi(score1.c_str());
     int scoreII = atoi(score2.c_str());
-    int diff;
+    double diff;
     //Winning
     if(scoreI>scoreII){
-      diff = scoreI - scoreII;
-      matrix(i,0)=diff;
+      diff = (scoreI - scoreII);
       int winner = map.find(team1)->second;
       int loser = map.find(team2)->second;
       //cout<< winner<< " " << i<<"\n";
       if(winner>0&&winner<353&&loser>0&&loser<353){
-	matrix(i,winner)= 1 +team1Home;
+	matrix(i,winner)= 1;
 	matrix(i,loser) = -1;
-	score(i,0)=diff;
+
+	  score(i,0)=diff; 
+	
       }
     }
     else{
-      diff = scoreII - scoreI;
+      diff = (scoreII - scoreI);
       int winner = map.find(team2)->second;
       int loser = map.find(team1)->second;
       if(winner>0&&winner<353&&loser>0&&loser<353){
-	matrix(i,winner)= 1+team2Home;
+	matrix(i,winner)= 1;
 	matrix(i,loser) = -1;
-	score(i,0)=diff;
+
+	  score(i,0)=diff; 
+	
       }
     }
     i++;
